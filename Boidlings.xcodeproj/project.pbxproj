@@ -1389,7 +1389,7 @@
 				ORGANIZATIONNAME = Tinybop;
 				TargetAttributes = {
 					D425C32C17F1F8760057F993 = {
-						DevelopmentTeam = Y22BVM39A5;
+						DevelopmentTeam = XUA4UP9P6D;
 					};
 				};
 			};

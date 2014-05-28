@@ -16,4 +16,13 @@
 +(id) bulletWithSpaceManager:(SpaceManager*)spaceManager;
 -(id) initWithSpaceManager:(SpaceManager*)spaceManager;
 
+//Cameron added this
++(void) setEnemies:(NSMutableArray*)enemies;
+-(void) update:(ccTime)dt;
+-(void) applyHeatSeekingForce;
+
+
+
+
+
 @end

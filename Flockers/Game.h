@@ -33,10 +33,13 @@
 @property(nonatomic, readonly) NSMutableArray *gravitationalBodies;
 @property(nonatomic, readonly) NSMutableArray *enemySpawnPoints;
 
+
+
 //Colors
 @property(nonatomic, readwrite, assign) ccColor4F defaultConstraintColor;
 @property(nonatomic, readwrite, assign) ccColor4F defaultShapeColor;
 @property(nonatomic, readwrite, assign) ccColor4F defaultRopeColor;
+
 
 -(void) setBoundingRect:(CGRect)rect;
 

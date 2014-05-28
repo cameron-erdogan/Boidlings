@@ -16,6 +16,7 @@
     
     CCSprite *_cannon;
     CCSprite *_rockets;
+    
 }
 
 @property (readwrite, assign, nonatomic) CGPoint aimVector;
@@ -26,6 +27,9 @@
 
 +(id) playerWithSpaceManager:(SpaceManager*)spaceManager;
 -(id) initWithSpaceManager:(SpaceManager*)spaceManager;
+
+//Cameron added this
++(void) setEnemies:(NSMutableArray*)enemies;
 
 -(void) update:(ccTime)dt;
 

@@ -19,6 +19,17 @@
 
 @implementation Player
 
+//Cameron added this
+static NSMutableArray* _enemies;
+//
++(void) setEnemies:(NSMutableArray*)enemies
+{
+    if(!_enemies)
+    {
+        _enemies = enemies;
+    }
+}
+
 +(id) playerWithSpaceManager:(SpaceManager*)spaceManager
 {
     return [[[self alloc] initWithSpaceManager:spaceManager] autorelease];
@@ -80,6 +91,7 @@
     // Shoot if necessary
     [self updateShooting:dt];
     
+    
     // Reset forces, then apply a new one
     cpBodyResetForces(body);
     cpBodyApplyForce(body, ccpMult(_realVelocityVector, forceMultiplier), cpvzero);
@@ -118,7 +130,12 @@
         Bullet *bullet = [Bullet bulletWithSpaceManager:self.spaceManager];
         bullet.position = localPt;
         bullet.gravitationalBodies = self.gravitationalBodies;
+        
+        //Cameron added this
+        [Bullet setEnemies:_enemies];
+        
         [self.parent addChild:bullet];
+    
         
         // Match the velocities
         cpBodySetVel(bullet.body, cpBodyGetVel(self.body));
@@ -127,13 +144,13 @@
         CGPoint dir = ccpNormalize(ccpSub(localPt, self.position));
         
         // Apply an impulse (like a gunshot)
-        cpBodyApplyImpulse(bullet.body, ccpMult(dir, 600), cpvzero);
+        cpBodyApplyImpulse(bullet.body, ccpMult(dir, 1200), cpvzero);
         
         // sfx, random pitch value
         [[SimpleAudioEngine sharedEngine] playEffect:@"shoot.wav" pitch:randomFloatRange(.8, 1) pan:0 gain:1.0];
         
         // Reset the timer
-        _shootTimer = .75;
+        _shootTimer = .5;
     }
 }
 

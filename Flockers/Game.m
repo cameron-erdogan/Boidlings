@@ -30,6 +30,8 @@
     float _enemySpawnTimer;
     
     NSMutableArray *_explosionPool;
+    
+    NSMutableArray *_enemies;
 }
 @end
 
@@ -63,6 +65,12 @@
         _enemySpawnPoints = [[NSMutableArray array] retain];
         _enemyPool = [[NSMutableArray array] retain];
         _explosionPool = [[NSMutableArray array] retain];
+        
+        //Cameron added this
+        //contains pointers to all of the enemies that are in the space
+        //basically the complement to _enemyPool
+        _enemies = [[NSMutableArray array] retain];
+        [Player setEnemies:_enemies];
         
         // Colors
         _defaultConstraintColor = ccc4f(0, 1, 0, 1);
@@ -139,6 +147,8 @@
     [_spaceManager release];
     [_panZoomController release];
     
+    [_enemies release];
+    
 	[super dealloc];
 }
 
@@ -176,6 +186,7 @@
 
     // redraw dynamic drawing things
     [self updateDynamicDrawing];
+    
 }
 
 -(void) updateDynamicDrawing
@@ -214,11 +225,16 @@
 {
     _enemySpawnTimer -= dt;
     
+//    NSLog(@"%i enemies", [_gravitationalBodies count]);
+    
     // When our timer hits zero and we have enemies, then spawn one
     if (_enemySpawnTimer < 0 && [_enemyPool count] > 0)
     {
         Enemy *enemy = [_enemyPool lastObject];
         [_enemyPool removeLastObject];
+        
+        //Cameron added this
+        [_enemies addObject:enemy];
 
         // Grab a random spawn position
         enemy.position = [[_enemySpawnPoints objectAtIndex:rand()%[_enemySpawnPoints count]] CGPointValue];
@@ -274,6 +290,11 @@
 
 -(void) recycleEnemyForPool:(Enemy*)enemy
 {
+    NSLog(@"enemy recycled");
+    NSLog(@"%i enemies in pool", [_enemyPool count]);
+    NSLog(@"%i enemies in enemies", [_enemies count]);
+    
+    
     // Place it out of the way
     enemy.position = ccp(-200, -200);
     enemy.visible = NO;
@@ -283,6 +304,11 @@
     cpBodyResetForces(enemy.body);
     
     [_enemyPool addObject:enemy];
+    
+    //Cameron added this
+    //should remove the object from _enemies when you add it to pool
+    if([_enemies count] > 0)
+        [_enemies removeObject:enemy];
 }
 
 -(void) zoomOut
